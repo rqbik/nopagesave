@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "No Page Save",
+  "version": "1.0.0",
+  "homepage_url": "https://github.com/rqbik/nopagesave/",
+  "description": "No more annoying Ctrl + S keybind!",
+  "short_name": "NoPageSave",
+  "icons": {
+    "128": "icons/icon128.png",
+    "64": "icons/icon64.png",
+    "32": "icons/icon32.png",
+    "16": "icons/icon16.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+on: [push]
+
+name: Create extension release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Begin CI...
+        uses: actions/checkout@v2
+
+      - name: Use Node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Write private pem key
+        run: echo "$KEY" > key.pem
+        env:
+          KEY: ${{ secrets.PEM_KEY }}
+
+      - name: Pack extension
+        run: npx crx pack -o extension.crx -p key.pem
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # This never changes
+          tag_name: master
+          release_name: Packed extension
+          body: |
+            Packed extension.
+            In order to use this extension, you need to:
+
+            1. Download `extension.crx`.
+            2. Unpack it using WinRAR or 7zip.
+            3. Open `chrome://extensions/` panel in your browser.
+            4. Enable developer mode
+            5. Press `Load unpacked` button and select directory with unpacked extension.
+            6. Done!
+
+            All this effort just to disable annoying keybind...
+
+          draft: false
+          prerelease: false
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./extension.crx
+          asset_name: extension.crx
+          asset_content_type: application/x-chrome-extension
