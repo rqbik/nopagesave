@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "No Page Save",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage_url": "https://github.com/rqbik/nopagesave/",
   "description": "No more annoying Ctrl + S keybind!",
   "short_name": "NoPageSave",

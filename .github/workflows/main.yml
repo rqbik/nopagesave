@@ -29,8 +29,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # This never changes
-          tag_name: master
+          tag_name: ${{ github.ref }}
           release_name: Packed extension
           body: |
             Packed extension.
